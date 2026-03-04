@@ -1,0 +1,110 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    // introduzindo as datas
+    int d1, m1, a1, d2, m2, a2;
+    scanf("%d/%d/%d %d/%d/%d", &d1, &m1, &a1, &d2, &m2, &a2);
+    // introduzindo as operações
+    int sum = 0, mult = 0,  rest = 0;
+    sum = d1 + m1 + a1 + d2 + m2 + a2;
+    mult = 7 * sum;
+    rest = mult % 101;
+    // primeira saída
+    printf("Amor: %d%% ", rest);
+
+    // Aqui eu enfrentei minhas primeiras dificuldades: escrevi os condicionais na forma 'a >= x >= b'. Assim, o compilador lê errado e não atribui correntamente o True e False. Eu não sabia disso... :(
+    if (rest < 20) {
+        printf("Pessimo dia para se apaixonar.\n");
+
+    } else if (rest >= 20 && rest <= 40) {
+        printf("Melhor manter o coracao <3 longe de perigo.\n");
+
+    } else if (rest >= 41 && rest <= 69) {
+        printf("Se o papo e as ideias baterem, esta liberado pensar em algo.\n");
+
+    } else if (rest >= 70 && rest <= 80) {
+        printf("Saia com o coracao aberto, mas lembre, nem toda troca de olhar em onibus e sinal de romance.\n");
+
+    } else if (rest > 80) {
+        printf("Um dia deslumbrantemente lindo para amar. Ps: Cuidado com a intensidade.\n");
+    }
+
+    // segunda saída
+    int operacao2 = 0;
+    operacao2 = ((d1 + d2 + m1 + m2) * 9 + abs(a1 - a2)) % 101;
+
+    printf("Sorte: %d%% ", operacao2);
+
+    if (operacao2 < 30) {
+        printf("Nem jogue moedas pra cima hoje.");
+
+    } else if (operacao2 >= 31 && operacao2 <= 50) {
+        printf("Melhor nao arriscar.");
+
+    } else if (operacao2 >= 51 && operacao2 <= 79) {
+        printf("Por sua conta em risco.");
+
+    } else if (operacao2 >= 80 && operacao2 <= 90) {
+        printf("Hoje vale a pena arriscar.");
+
+    } else if (operacao2 > 90) {
+        printf("Nao tenha medo de virar cartas hoje.");
+    }
+
+    printf(" Sem tigrinho nem jogos de azar, por favor!\n");
+
+    // terceira saída
+    int operacao3 = 0;
+    operacao3 = ((a1 + a2) - (d1 + d2 + m1 + m2) * 8) % 101;
+
+    
+    printf("Trabalho: %d%% ", operacao3);
+    
+    if (operacao3 < 40) {
+        printf("Hoje nao sera um dia tao proveitoso, keep calm e faca o basico.\n");
+
+    } else if (operacao3 >= 40 && operacao3 <= 50) {
+        printf("Segura a emocao, nao xinga ninguem, nao esquece de beber agua.\n");
+
+    } else if (operacao3 >= 51 && operacao3 <= 69) {
+        printf("Um dia proveitoso com certeza, leve sua simpatia consigo.\n");
+
+    } else if (operacao3 >= 70 && operacao3 <= 84) {
+        printf("Boas vibracoes hoje, chances podem estar ao seu redor.\n");
+
+    } else if (operacao3 >= 85) {
+        printf("Use do maximo de networking possível hoje, dia bom para negocios.\n");
+    }
+    printf("Cor: ");
+
+    // quarta saída
+    int operacao4 = 0;
+    operacao4 = (d1 * d1 + d2 * d2 + m1 * m1 + m2 * m2 + a2 * a2 + a1 * a1) % 11;
+    if (operacao4 == 0) {
+        printf("Cinza.\n");
+    } else if (operacao4 == 1) {
+        printf("Vermelho.\n");
+    } else if (operacao4 == 2) {
+        printf("Laranja.\n");
+    } else if (operacao4 == 3) {
+        printf("Amarelo.\n");
+    }  else if (operacao4 == 4) {
+        printf("Verde.\n");
+    }  else if (operacao4 == 5) {
+        printf("Azul.\n");
+    }  else if (operacao4 == 6) {
+        printf("Roxo.\n");
+    }  else if (operacao4 == 7) {
+        printf("Marrom.\n");
+    }  else if (operacao4 == 8) {
+        printf("Rosa.\n");
+    }  else if (operacao4 == 9) {
+        printf("Preto.\n");
+    }  else if (operacao4 == 10) {
+        printf("Branco.\n");
+    };
+
+    
+
+}
