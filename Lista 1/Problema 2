@@ -1,0 +1,54 @@
+#include <stdio.h>
+
+// observei que os n�meros que s�o m�ltiplos dos dois ao mesmo tempo (que seguem o formato kAB) apenas s�o retirados uma vez. Logo, tive que criar uma condi��o que impedisse que fossem contabilizados 2x.
+int mdc(int a, int b) {
+    if (b == 0)
+        return a;
+    return mdc(b, a % b);
+}
+
+int main () {
+    // introduzindo N
+    int N = 0;
+    scanf("%d", &N);
+    // introduzindo A e B
+    int A = 0, B = 0;
+    scanf("%d %d", &A, &B);
+
+    // a soma de todos os inteiros anteriores � uma soma de PA de raz�o 1!
+    int sum = 0;
+    sum = (N / 2) * (1 + N);
+    // vamos retirar os m�ltiplos de A e B
+    int NA = 0, NB = 0, restA = 0, restB = 0;
+    // analisando A e B...
+    restA = N % A;
+    restB = N % B;
+
+    NA = N - restA;
+    NB = N - restB;
+
+    // o que nos leva a...
+    int novoNA = 0, novoNB = 0;
+    novoNA = NA / A;
+    novoNB = NB / B;
+    // essas duas linhas nos indicam quantos m�ltiplos temos. Com isso, vira uma soma de PG!
+    int somaA = 0, somaB = 0;
+    somaA = (novoNA * (A + NA)) / 2; 
+    somaB = (novoNB * (B + NB)) / 2;
+    // resultado...
+    int mmc = (A * B) / mdc(A, B);
+    int kM = N / mmc;
+    int somaM = mmc * kM * (kM + 1) / 2;
+    sum = sum - somaA - somaB + somaM;
+    // sa�das
+    printf("%d\n", sum);
+    int resto = 0;
+    resto = sum % 2;
+
+    if (resto == 0) {
+        printf("L� ele!!!\n");
+    } else {
+        printf("Opa xupenio AULAS...\n");
+    };
+
+}
