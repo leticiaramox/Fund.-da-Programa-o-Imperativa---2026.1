@@ -1,111 +1,109 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 int main () {
-    // recebendo o valor
-    int valor = 0, valorInicial = 0;
-    scanf("%d", &valor);
-    valorInicial = valor;
-    // recebendo as porcentagens
-    int porc1, porc2, porc3;
-    scanf("%d", &porc1);
-    scanf("%d", &porc2);
-    scanf("%d", &porc3);
-    //analisando o dinheiro de Rebeka
-    double dinReb = 3.0, numNotas = 0;
-    // as parcelas...
-    double num1, num2, num3;
-    num1 = (0.01 * porc1) * valor;
-    num2 = (0.01 * porc2) * valor;
-    num3 = (0.01 * porc3) * valor;
-    // flag se rebeka pôde ajudar ou não
-    int deuCerto = 1;
+    // inserindo a entrada...
+    int x = 0, y = 0, Q = 0;
+    scanf("%d %d %d", &x, &y, &Q);
+    // quadrante inicial e o destino
+    int q = 0, qDestino = 0;
+    if ((x > 0) && (y > 0)) {
+        q = 1;
+    } else if ((x > 0) && (y < 0)) {
+        q = 4;
+    } else if ((x < 0) && (y > 0)) {
+        q = 2;
+    } else if ((x < 0) && (y < 0)) {
+        q = 3;
+    };
 
-    if ((num1 == (int)num1) && (num2 == (int)num2) && (num3 == (int)num3)) {
-        valor -= (num1 + num2 + num3);
+    // flag de caminho impossivel
+    int impossivel = 0;
+    if ((q == 1) && (Q == 3)) {
+        impossivel = 1;
+    } else if ((q == 2) && (Q == 4)) {
+        impossivel = 1;
+    } else if ((q == 3) && (Q == 1)) {
+        impossivel = 1;
+    } else if ((q == 4) && (Q == 2)) {
+        impossivel = 1;
+    } else if (q == Q) {
+        impossivel = 1;
+    };
+
+    // print da caminhada inválida
+    if (impossivel == 1) {
+        printf("caminhada invalida\n");
     } else {
-        double restante;
-        restante = (valor - (num1 + num2 + num3));
-        if ((dinReb + restante) > 3) {
-            valor += 1;
-            dinReb -= 1;
-            num1 = (0.01 * porc1) * valor;
-            num2 = (0.01 * porc2) * valor;
-            num3 = (0.01 * porc3) * valor;
-            if ((num1 == (int)num1) && (num2 == (int)num2) && (num3 == (int)num3)) {
-                valor -= (num1 + num2 + num3);
-            } else {
-                restante = valor - num1 - num2 - num3;
-                if ((dinReb + restante) > 3) {
-                    valor += 1;
-                    dinReb -= 1;
-                    num1 = (0.01 * porc1) * valor;
-                    num2 = (0.01 * porc2) * valor;
-                    num3 = (0.01 * porc3) * valor;
-                    if ((num1 == (int)num1) && (num2 == (int)num2) && (num3 == (int)num3)) {
-                        valor -= (num1 + num2 + num3);
-                    } else {
-                        restante = valor - num1 - num2 - num3;
-                        if ((dinReb + restante) > 3) {
-                            valor += 1;
-                            dinReb -= 1;
-                            num1 = (0.01 * porc1) * valor;
-                            num2 = (0.01 * porc2) * valor;
-                            num3 = (0.01 * porc3) * valor;
-                            if ((num1 == (int)num1) && (num2 == (int)num2) && (num3 == (int)num3)) {
-                                valor -= (num1 + num2 + num3);
-                            } else {
-                                deuCerto = 0;
-                            };
-                        } else {
-                            deuCerto = 0;
-                        };
-                    };
-                } else {
-                    deuCerto = 0;
-                };
+        // processo para caminhadas válidas
+        // achando a diagonal
+        qDestino = ((q + 2) % 4);
+        if (qDestino == 0) {
+            qDestino = 4;
+        };
+        // achando as coordenadas do destino
+        int xDestino = 0, yDestino = 0;
+        if (qDestino == 1) {
+            xDestino = 1;
+            yDestino = 1;
+        } else if (qDestino == 2) {
+            xDestino = -1;
+            yDestino = 1;
+        } else if (qDestino == 3) {
+            xDestino = -1;
+            yDestino = -1;
+        } else if (qDestino == 4) {
+            xDestino = 1;
+            yDestino = -1;
+        };
+        // número de passos do caminho percorrido
+        int Dx = 0, Dy = 0;
+        Dx = abs(x - xDestino);
+        Dy = abs(y - yDestino);
+        // sequência seguida durante o trajeto
+        int primeiro = 0, segundo = 0;
+        char coord1, coord2;
+        if (q == 4) {
+            if (Q == 1) {
+                primeiro = Dx;
+                coord1 = 'x';
+                segundo = Dy;
+                coord2 = 'y';
+            } else if (Q == 3) {
+                primeiro = Dy;
+                coord1 = 'y';
+                segundo = Dx;
+                coord2 = 'x';
+            };
+        } else if (q == 1) {
+            if (Q == 4) {
+                primeiro = Dx;
+                coord1 = 'x';
+                segundo = Dy;
+                coord2 = 'y';
+            } else if (Q == 2) {
+                primeiro = Dy;
+                coord1 = 'y';
+                segundo = Dx;
+                coord2 = 'x';
             };
         } else {
-            deuCerto = 0;
-        };
-    };
-
-    // imprimendo as mensagens
-    if ((num1 == (int)num1) && (num2 == (int)num2) && (num3 == (int)num3)) {
-        printf("Cada homem ficou com %d, %d e %d reais, respectivamente\n", (int)num1, (int)num2, (int)num3);
-    } else if (deuCerto == 0) {
-        printf("Nao foi dessa vez que Rebeka pode ajudar...\n");
-    };
-
-    int soma = 0;
-    if (deuCerto == 1) {
-    // numero de notas adicionadas
-        if (dinReb == 1) {
-            char char1, char2, char3;
-            scanf("%d %d %d", &char1, &char2, &char3);
-            soma = (char1 - 'a' + 1) + (char2 - 'a' + 1) + (char3 - 'a' + 1);
-            printf("%d\n", soma);
-        } else if (dinReb == 0) {
-            int i1, i2, i3;
-            scanf("%d %d %d", &i1, &i2, &i3);
-            if (((i1 % 3) == 0) || ((i2 % 3) == 0) || ((i3 % 3) == 0)) {
-                int div1 = 0, div2 = 0, div3 = 0, somaParcelas = 0;
-                div1 = i1 / 3;
-                div2 = i2 / 3;
-                div3 = i1 / 3;
-                somaParcelas = div1 + div2 + div3;
-                printf("%d\n", somaParcelas);
+            if (Q > q) {
+                primeiro = Dy;
+                coord1 = 'y';
+                segundo = Dx;
+                coord2 = 'x';
+            } else {
+                primeiro = Dx;
+                coord1 = 'x';
+                segundo = Dy;
+                coord2 = 'y';
             };
-        };
+        }; 
+        printf("%d passos em %c e %d passos em %c\n", primeiro, coord1, segundo, coord2);
     };
-
-    if (deuCerto == 1) {
-        dinReb += valor;
-    };
-
-    if (dinReb >= 7) {
-        printf("Ela conseguiu! Rebeka voltou para casa e apanhou da mae por sumir noite passada!\n");
-    } else {
-        printf("E parece que Rebeka vai ter que voltar andando...\n");
-    };
-    
 }
+
+
+// a principal dificuldade desse problema foi criar a sequência de passos. Como não pude usar listas, fazer esse processo cíclico do 0 foi um pouco complicado...
+
