@@ -1,0 +1,94 @@
+#include <stdio.h>
+
+int main () {
+    // recebendo o valor
+    int valor = 0, valorInicial = 0;
+    scanf("%d", &valor);
+    valorInicial = valor;
+    // recebendo as porcentagens
+    int porc1, porc2, porc3;
+    scanf("%d", &porc1);
+    scanf("%d", &porc2);
+    scanf("%d", &porc3);
+    //analisando o dinheiro de Rebeka
+    int dinReb = 3, numNotas = 0;
+    // as parcelas...
+    double num1, num2, num3;
+    num1 = (0.01 * porc1) * valor;
+    num2 = (0.01 * porc2) * valor;
+    num3 = (0.01 * porc3) * valor;
+    // agora, vamos analisar os casos que não dão inteiros. Primeiramente, eu fiz uma recursão simples, mas não pode usar. A estrutura dos condicionais virou a seguinte...
+    if ((num1 == (int)num1) && (num2 == (int)num2) && (num3 == (int)num3)) {
+        valor -= (num1 + num2 + num3);
+    } else {
+        int restante = 0;
+        restante = valor - num1 - num2 - num3;
+        if ((dinReb + restante) > 3) {
+            valor += 1;
+            dinReb -= 1;
+            num1 = (0.01 * porc1) * valor;
+            num2 = (0.01 * porc2) * valor;
+            num3 = (0.01 * porc3) * valor;
+            if (!((num1 == (int)num1) || !(num2 == (int)num2) || !(num3 == (int)num3))) {
+                restante = valor - num1 - num2 - num3;
+                if ((dinReb + restante) > 3) {
+                    valor += 1;
+                    dinReb -= 1;
+                    num1 = (0.01 * porc1) * valor;
+                    num2 = (0.01 * porc2) * valor;
+                    num3 = (0.01 * porc3) * valor;
+                    if (!(num1 == (int)num1) || !(num2 == (int)num2) || !(num3 == (int)num3)) {
+                        restante = valor - num1 - num2 - num3;
+                        if ((dinReb + restante) > 3) {
+                            valor += 1;
+                            dinReb -= 1;
+                            num1 = (0.01 * porc1) * valor;
+                            num2 = (0.01 * porc2) * valor;
+                            num3 = (0.01 * porc3) * valor;
+                        }
+                    } else {
+                        valor -= (num1 + num2 + num3);
+                    };
+                };
+            } else {
+                valor -= (num1 + num2 + num3);
+            };
+        }
+    }
+
+    // imprimendo as mensagens
+    if ((num1 == (int)num1) && (num2 == (int)num2) && (num3 == (int)num3)) {
+        printf("Cada homem ficou com %d, %d e %d reais, respectivamente\n", (int)num1, (int)num2, (int)num3);
+    } else {
+        printf("Nao foi dessa vez que Rebeka pode ajudar...\n");
+    };
+
+    int soma = 0;
+    // numero de notas adicionadas
+    if (dinReb == 1) {
+        char char1, char2, char3;
+        scanf("%d %d %d", &char1, &char2, &char3);
+        soma = (char1 - 'a' + 1) + (char2 - 'a' + 1) + (char3 - 'a' + 1);
+        printf("%d\n", soma);
+    } else if (dinReb == 0) {
+        int i1, i2, i3;
+        scanf("%d %d %d", &i1, &i2, &i3);
+        if (((i1 % 3) == 0) || ((i2 % 3) == 0) || ((i3 % 3) == 0)) {
+            int div1 = 0, div2 = 0, div3 = 0, somaParcelas = 0;
+            div1 = i1 / 3;
+            div2 = i2 / 3;
+            div3 = i1 / 3;
+            somaParcelas = div1 + div2 + div3;
+            printf("%d\n", somaParcelas);
+        };
+    };
+
+    dinReb += valor;
+    
+    if (dinReb >= 7) {
+        printf("Ela conseguiu! Rebeka voltou para casa e apanhou da mae por sumir noite passada!\n");
+    } else {
+        printf("E parece que Rebeka vai ter que voltar andando...\n");
+    };
+    
+}
