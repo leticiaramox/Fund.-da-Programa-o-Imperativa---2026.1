@@ -63,19 +63,7 @@ int main () {
         // sequência seguida durante o trajeto
         int primeiro = 0, segundo = 0;
         char coord1, coord2;
-        if (q == 4) {
-            if (Q == 1) {
-                primeiro = Dx;
-                coord1 = 'x';
-                segundo = Dy;
-                coord2 = 'y';
-            } else if (Q == 3) {
-                primeiro = Dy;
-                coord1 = 'y';
-                segundo = Dx;
-                coord2 = 'x';
-            };
-        } else if (q == 1) {
+        if (q == 1) {
             if (Q == 4) {
                 primeiro = Dx;
                 coord1 = 'x';
@@ -87,23 +75,43 @@ int main () {
                 segundo = Dx;
                 coord2 = 'x';
             };
-        } else {
-            if (Q > q) {
+        } else if (q == 2) {
+            if (Q == 1) {
                 primeiro = Dy;
                 coord1 = 'y';
                 segundo = Dx;
                 coord2 = 'x';
-            } else {
+            } else if (Q == 3) {
                 primeiro = Dx;
                 coord1 = 'x';
                 segundo = Dy;
                 coord2 = 'y';
             };
-        }; 
+        } else if (q == 3) {
+            if (Q == 2) {
+                primeiro = Dx;
+                coord1 = 'x';
+                segundo = Dy;
+                coord2 = 'y';
+            } else if (Q == 4) {
+                primeiro = Dy;
+                coord1 = 'y';
+                segundo = Dx;
+                coord2 = 'x';
+            };
+        } else if (q == 4) {
+            if (Q == 1) {
+                primeiro = Dx;
+                coord1 = 'x';
+                segundo = Dy;
+                coord2 = 'y';
+            } else if (Q == 3) {
+                primeiro = Dy;
+                coord1 = 'y';
+                segundo = Dx;
+                coord2 ='x';
+            }
+        };
         printf("%d passos em %c e %d passos em %c\n", primeiro, coord1, segundo, coord2);
     };
 }
-
-
-// a principal dificuldade desse problema foi criar a sequência de passos. Como não pude usar listas, fazer esse processo cíclico do 0 foi um pouco complicado...
-
