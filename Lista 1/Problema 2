@@ -1,48 +1,57 @@
 #include <stdio.h>
 
+
+// nesse problema, eu não sabia usar long long. Deu MUITO erro nos tests cases (caso 3, 4 e 7) e real não sabia o que era! 
+// com isso, pedi ajuda a IA e ela apontou esse erro!
 int main () {
     // introduzindo N
-    int N = 0;
-    scanf("%d", &N);
+    long long N = 0;
+    scanf("%lld", &N);
+
     // introduzindo A e B
-    int A = 0, B = 0;
-    scanf("%d %d", &A, &B);
+    long long A = 0, B = 0;
+    scanf("%lld %lld", &A, &B);
 
     // a soma de todos os inteiros anteriores é uma soma de PA de razão 1!
-    int sum = 0;
-    sum = (N / 2) * (1 + N);
+    long long sum = 0;
+    sum = (N * (N + 1)) / 2;
+
     // vamos retirar os múltiplos de A e B
-    int NA = 0, NB = 0, restA = 0, restB = 0;
+    long long NA = 0, NB = 0, restA = 0, restB = 0;
+
     // analisando A e B...
     restA = N % A;
     restB = N % B;
     NA = N - restA;
     NB = N - restB;
+
     // o que nos leva a...
-    int novoNA = 0, novoNB = 0;
+    long long novoNA = 0, novoNB = 0;
     novoNA = NA / A;
     novoNB = NB / B;
+
     // essas duas linhas nos indicam quantos múltiplos temos. Com isso, vira uma soma de PA!
-    int somaA = 0, somaB = 0;
+    long long somaA = 0, somaB = 0;
     somaA = (novoNA * (A + NA)) / 2; 
     somaB = (novoNB * (B + NB)) / 2;
+
     // resultado...
-    int produto = A * B, Nprod = 0;
+    long long produto = A * B, Nprod = 0;
     Nprod = N / produto;
-    // aqui foi a minha dificuldade. Eu vi que os números que eram múltiplos dos dois (A e B) estavam sendo retirados duas vezes. Essa soma garante que sejam retirados duas!
-    int somaM = (((Nprod * (A * B + Nprod * (A * B))) / 2));
-    sum -= (somaA + somaB);
-    sum += somaM;
+    long long somaM = ((Nprod * (A * B + Nprod * (A * B))) / 2);
+
+    sum = sum - somaA - somaB + somaM;
+
     // saídas
-    printf("%d\n", sum);
-    int resto = 0;
+    printf("%lld\n", sum);
+
+    long long resto = 0;
     resto = sum % 2;
 
     if (resto == 0) {
         printf("Lá ele!!!\n");
     } else {
         printf("Opa xupenio AULAS...\n");
-    };
+    }
 
 }
-
