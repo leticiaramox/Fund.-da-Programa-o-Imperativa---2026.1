@@ -11,9 +11,9 @@ int main () {
     scanf("%d", &porc2);
     scanf("%d", &porc3);
     //analisando o dinheiro de Rebeka
-    double dinReb = 3.0, numNotas = 0;
+    int dinReb = 3;
     // as parcelas...
-    double num1, num2, num3;
+    float num1, num2, num3;
     num1 = (0.01 * porc1) * valor;
     num2 = (0.01 * porc2) * valor;
     num3 = (0.01 * porc3) * valor;
@@ -24,9 +24,11 @@ int main () {
         valor -= (num1 + num2 + num3);
     } else {
         double restante;
+        int investimento = 0;
         restante = (valor - (num1 + num2 + num3));
-        if ((dinReb + restante) > 3) {
+        if (restante >= (investimento + 1)) {
             valor += 1;
+            investimento += 1;
             dinReb -= 1;
             num1 = (0.01 * porc1) * valor;
             num2 = (0.01 * porc2) * valor;
@@ -35,8 +37,9 @@ int main () {
                 valor -= (num1 + num2 + num3);
             } else {
                 restante = valor - num1 - num2 - num3;
-                if ((dinReb + restante) > 3) {
+                if (restante >= (investimento + 1)) {
                     valor += 1;
+                    investimento += 1;
                     dinReb -= 1;
                     num1 = (0.01 * porc1) * valor;
                     num2 = (0.01 * porc2) * valor;
@@ -45,9 +48,10 @@ int main () {
                         valor -= (num1 + num2 + num3);
                     } else {
                         restante = valor - num1 - num2 - num3;
-                        if ((dinReb + restante) > 3) {
+                        if (restante >= (investimento + 1)) {
                             valor += 1;
                             dinReb -= 1;
+                            investimento += 1;
                             num1 = (0.01 * porc1) * valor;
                             num2 = (0.01 * porc2) * valor;
                             num3 = (0.01 * porc3) * valor;
@@ -81,18 +85,23 @@ int main () {
     // numero de notas adicionadas
         if (dinReb == 1) {
             char char1, char2, char3;
-            scanf("%d %d %d", &char1, &char2, &char3);
+            scanf(" %c %c %c", &char1, &char2, &char3);
             soma = (char1 - 'a' + 1) + (char2 - 'a' + 1) + (char3 - 'a' + 1);
             printf("%d\n", soma);
         } else if (dinReb == 0) {
             int i1, i2, i3;
             scanf("%d %d %d", &i1, &i2, &i3);
             if (((i1 % 3) == 0) || ((i2 % 3) == 0) || ((i3 % 3) == 0)) {
-                int div1 = 0, div2 = 0, div3 = 0, somaParcelas = 0;
-                div1 = i1 / 3;
-                div2 = i2 / 3;
-                div3 = i1 / 3;
-                somaParcelas = div1 + div2 + div3;
+                int somaParcelas = 0;
+                if (i1 % 3 == 0) {
+                    somaParcelas += i1 / 3;
+                }
+                if (i2 % 3 == 0) {
+                    somaParcelas += i2 / 3;
+                }
+                if (i3 % 3 == 0) {
+                    somaParcelas += i3 / 3;
+                }
                 printf("%d\n", somaParcelas);
             };
         };
@@ -101,11 +110,10 @@ int main () {
     if (deuCerto == 1) {
         dinReb += valor;
     };
-
+    
     if (dinReb >= 7) {
         printf("Ela conseguiu! Rebeka voltou para casa e apanhou da mae por sumir noite passada!\n");
     } else {
         printf("E parece que Rebeka vai ter que voltar andando...\n");
     };
-    
 }
