@@ -1,0 +1,85 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main () {
+
+    int numFornecido = 0, numCanais = 0;
+    scanf("%d %d", &numFornecido, &numCanais);
+    // introduzindo as vari?veis de controle
+    int distancia1 = 0, distancia2 = 0;
+    int distMinima = 0;
+    int min = 0;
+    int numEscolhido = 0;
+    int termoEscolhido = 0;
+    // come?amis a receber as entradas de cada canal
+    for (int i = 0; i < numCanais; i++) {
+        // guardando as informa??es para os prints
+        int parar = 0, indice = 2;
+        int n1 = 0, n2 = 0, n3 = 0, escolho1 = 0, escolho2 = 0;
+
+        scanf("%d %d", &n1, &n2);
+        // lendo as dist?ncias m?nimas
+        while (parar == 0) {
+            // compando comportamentos decrescentes/crescentes
+            if (abs(numFornecido - n2) < abs(numFornecido - n1)) {
+                distancia1 = abs(numFornecido - n2);
+                escolho2 = 1;
+            } else {
+                distancia1 = abs(numFornecido - n1);
+                indice--;
+                escolho1 = 1;
+            }
+
+            n3 = n1 + n2;
+            distancia2 = abs(numFornecido - n3);
+            // parando o loop
+            if (distancia2 >= distancia1) {
+                parar = 1;
+            } 
+            else {
+                n1 = n2;
+                n2 = n3;
+                indice++;
+            }
+        }
+
+        if (i == 0) {
+            distMinima = distancia1;
+            numEscolhido = i + 1;
+            min = indice;
+            // escolha depende se n1 já obdece d-minimo
+            if (escolho2) {
+                termoEscolhido = n2;
+            } else if (escolho1) {
+                termoEscolhido = n1;
+            };
+        }
+        
+        if ((distancia1 < distMinima) || (distancia1 == distMinima && (i + 1) > numEscolhido)) {
+            distMinima = distancia1;
+            numEscolhido = i + 1;
+            min = indice;
+            // escolha depende se n1 já obdece d-minimo
+            if (escolho2) {
+                termoEscolhido = n2;
+            } else if (escolho1) {
+                termoEscolhido = n1;
+            };
+        }
+    }
+    // somando os algarismos
+    int soma = 0;
+    while (termoEscolhido > 0) {
+        soma += termoEscolhido % 10;
+        termoEscolhido /= 10;
+    }
+    // mensagens
+    if (soma > 10) {
+        printf("Xupenio, para ir ao lulupalooza vc deve entrar no canal %d e sera chamado mais ou menos no minuto %d e com o VIP garantido!!!", numEscolhido, min);
+    }
+    else {
+        printf("Xupenio, para ir ao lulupalooza vc deve entrar no canal %d e sera chamado mais ou menos no minuto %d, mas o ingresso VIP não vai rolar :(", numEscolhido, min);
+    }
+
+    return 0;
+}
