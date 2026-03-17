@@ -1,0 +1,35 @@
+#include <stdio.h>
+
+int main() {
+    char letra;
+    scanf("%c", &letra);
+
+    int distancia = letra - 'A';
+
+    for (int i = 0; i <= distancia; i++) {
+
+        // pontinhos da frente
+        for (int j = 0; j < distancia - i; j++) {
+            printf(".");
+        }
+
+        // letras crescendo
+        for (int j = 0; j <= i; j++) {
+            printf("%c", 'A' + j);
+        }
+
+        // letras decrescendo
+        for (int j = i - 1; j >= 0; j--) {
+            printf("%c", 'A' + j);
+        }
+
+        // pontinhos de trás
+        for (int j = 0; j < distancia - i; j++) {
+            printf(".");
+        }
+
+        printf("\n");
+    }
+
+    return 0;
+}
