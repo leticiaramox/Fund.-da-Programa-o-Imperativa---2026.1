@@ -1,0 +1,62 @@
+#include <stdio.h>
+
+int main() {
+
+    int N, K, P;
+    scanf("%d %d %d", &N, &K, &P);
+
+    int mesmoNumero = -1, num = 0, indicador = 0;
+    // para o caso de N = 0, ele vai ser divisível por 2 infinitamente (o que não é interessante)
+    if (N == 0) {
+        N = 1;
+    }
+    // começando o loop
+    for (int n = N; n < K; n++) {
+
+        int temp = n;
+        // tirando os fatores pares
+        while (temp % 2 == 0) {
+            temp /= 2;
+        }
+        // contando os divisores
+        int numDivisores = 0;
+        int invalido = 0;
+        // achando o numero
+        for (int i = 3; i <= temp; i += 2) {
+
+            int contando = 0;
+            // começando a fatorar
+            while (temp % i == 0) {
+                temp /= i;
+                contando++;
+            }
+
+            if (contando == 1) {
+                numDivisores++;
+            }
+            // descartando em caso de repetição
+            if (contando > 1) {
+                invalido = 1;
+            }
+        }
+        // usando as flags para guardar valores
+        if (!invalido && numDivisores == P) {
+
+            if (indicador == 0) {
+                num = n;
+            }
+
+            indicador = 1;
+            mesmoNumero++;
+        }
+    }
+    // mensagens
+    if (indicador == 0) {
+        puts("Poxa dudinha, me desculpa, nao achei os numeros mas vou te mandar uma foto de um gatinho fofo.");
+    }
+    else {
+        printf("%d %d", num, mesmoNumero);
+    }
+
+    return 0;
+}
