@@ -1,0 +1,113 @@
+#include <stdio.h>
+
+int main () {
+    // primeira entrada
+    int numMov = 0;
+    scanf("%d", &numMov);
+    // flag para validar/guardar o movimento
+    int invalido = 0, passosAnterioresX = 0;
+    char direçãoAnteior = 'c';
+    int printa = 0;
+    for (int i = 0; i <= numMov; i++) {
+        // entrada n? 2
+        int numPassos = 0;
+        char direção = 'd';
+        scanf("%d %c", &numPassos, &direção);
+        // validando
+        if (direção == 'E') {
+            int movAnterior = passosAnterioresX - (numPassos +1);
+            if (movAnterior < 0) {
+                invalido =1;
+            }
+        };
+
+        // printando a trajet?ria apenas se a caminhada ? v?lida
+
+        if (invalido == 1) {
+            printf("Informacao invalida");
+            break;
+        } else {
+            // pulando linhas para baixo
+            if (direção == 'B') {
+                printf("\n");
+                for (int k = 1;k < numPassos; k++) {
+                    // printa os espa?os
+                    if (passosAnterioresX == 2) {
+                        printf(" ");
+                    }
+                    // printa os espa?os
+                    if (i + 1 == numMov) {
+                        printa = 1;
+                    };
+                    
+                    for (int j = 2;j < passosAnterioresX;j++) {
+                        printf(" ");
+                    };
+                    printf(".\n");
+                };
+            } else if (direção == 'E') {
+                if (direçãoAnteior == 'D') {
+                    // movimento inv?lido
+                    continue;
+                } else if (direçãoAnteior == 'B') {
+                    for (int j = 1; j < passosAnterioresX - (numPassos + 1); j++) {
+                        printf(" ");
+                    };
+                    for (int j = 0; j <=numPassos; j++) {
+                        printf(".");
+                    };
+                } else {
+                    for (int j = 0; j < passosAnterioresX; j++) {
+                        printf(" ");
+                    };
+                    for (int j = 0; j <numPassos; j++) {
+                        printf(".");
+                    };
+                }
+            } else if (direção == 'D') {
+                if (direçãoAnteior == 'E') {
+                    // movimento inv?lido
+                    continue;
+                } else if (direçãoAnteior == 'B') {
+                    for (int j = 1; j <passosAnterioresX; j++) {
+                        printf(" ");
+                    };
+                    for (int j = 0; j <=numPassos; j++) {
+                        printf(".");
+                    };
+                } else {
+                    for (int j = 0; j < passosAnterioresX; j++) {
+                        printf(" ");
+                    };
+                    for (int j = 0; j <numPassos; j++) {
+                        printf(".");
+                    };
+                };
+            };
+        };
+    
+        // renova depois para o print do X
+        if (direção == 'E') {
+            direçãoAnteior = 'E';
+        } else if (direção == 'D') {
+            direçãoAnteior = 'D';
+        } else {
+            direçãoAnteior = 'B';
+        };
+        // guardando os passos
+        if (direção == 'E') {
+            passosAnterioresX -= (numPassos + 1);
+        } else if (direção == 'D') {
+            passosAnterioresX += (numPassos + 1);
+        };
+
+    };
+
+    if (printa == 1) {
+    // printa os espa?os
+        for (int j = 2;j < passosAnterioresX;j++) {
+            printf(" ");
+        };
+        printf(".\n");
+    }
+}
