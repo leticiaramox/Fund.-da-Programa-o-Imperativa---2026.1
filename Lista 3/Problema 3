@@ -1,0 +1,87 @@
+#include <stdio.h>
+#include <ctype.h> // para reconhecer se é letra ou não E igualar maiúsculas e minúsculas
+
+int main() {
+    char str[101];
+    fgets(str, 101, stdin);
+    int printou = 1;
+
+    // aqui eu inicio uma lista que irá guardar palavra por palavra
+    int inicioPalavras[100]; // inicio dela
+    int tamanhoPalavras[100]; // fim
+    int qtd = 0;
+
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (isalpha(str[i])) {
+            int inicio = i; // inicio da palavra
+
+            while (isalpha(str[i])) {
+                i++;
+            }
+
+            int tamanho = i - inicio; // guarda o tamanho dela
+
+            inicioPalavras[qtd] = inicio; // coordenada da primeira letra
+            tamanhoPalavras[qtd] = tamanho; // coordenada da segunda letra
+            qtd++; // guarda a quantidade de palavras
+        }
+    }
+
+    int total = 0; // guarda a quantidade de anagramas
+
+    for (int i = 0; i < qtd; i++) {
+        for (int j = i + 1; j < qtd; j++) {
+
+            int freq[26] = {0};
+
+            for (int k = 0; k < tamanhoPalavras[i]; k++) { // primeira palavra
+                char c = tolower(str[inicioPalavras[i] + k]); // trata maiuculuas e minusculas como a msm coisa
+                freq[c - 'a']++; 
+            }
+
+            for (int k = 0; k < tamanhoPalavras[j]; k++) { // segunda palavra
+                char c = tolower(str[inicioPalavras[j] + k]);
+                freq[c - 'a']--; // se for a mesma letra, vai ter a mesma identidade numérica
+            }
+
+            int ehAnagrama = 1;
+
+            for (int k = 0; k < 26; k++) {
+                if (freq[k] != 0) {
+                    ehAnagrama = 0;
+                    break; // não existe nenhum anagrama OU já encontramos todos
+                }
+            }
+
+            if (ehAnagrama) {
+                if (printou == 1) {
+                    // para o caso de mais um par
+                    puts("Pares de anagramas encontrados:");
+                };
+                // printa a primeira palavra
+                for (int k = 0; k < tamanhoPalavras[i]; k++) {
+                    printf("%c", str[inicioPalavras[i] + k]);
+                }
+
+                printf(" e ");
+
+                // printa a segunda palavra
+                for (int k = 0; k < tamanhoPalavras[j]; k++) {
+                    printf("%c", str[inicioPalavras[j] + k]);
+                }
+
+                printf("\n");
+                printou = 0; // printa só uma vez
+
+                total++; // conta cada par
+            } 
+        }
+    }
+    if (total > 0) {
+        printf("\nTotal de pares: %d\n", total);
+    } else {
+        puts("Nao existem anagramas na frase.");
+    }
+
+    return 0;
+}
