@@ -1,0 +1,51 @@
+#include <stdio.h>
+
+int main () {
+    int N;
+    scanf("%d", &N);
+
+    for (int i = 0; i < N; i++) {
+        int tamArray;
+        scanf("%d", &tamArray);
+
+        int lista[tamArray];
+
+        for (int j = 0; j < tamArray; j++) {
+            scanf("%d", &lista[j]);
+        }
+
+        int inicioAtual = 0, tamAtual = 1;
+        int inicioMax = 0, tamMax = 0;
+
+        for (int j = 1; j < tamArray; j++) {
+            if (lista[j] < lista[j - 1]) {
+                tamAtual++;
+            } else {
+                if (tamAtual > 1 && tamAtual > tamMax) {
+                    tamMax = tamAtual;
+                    inicioMax = inicioAtual;
+                }
+                inicioAtual = j;
+                tamAtual = 1;
+            }
+        }
+
+        // última sequência
+        if (tamAtual > 1 && tamAtual > tamMax) {
+            tamMax = tamAtual;
+            inicioMax = inicioAtual;
+        }
+
+        // sa?da
+        printf("%d\n", tamMax);
+
+        if (tamMax > 0) {
+            for (int j = inicioMax; j < inicioMax + tamMax; j++) {
+                printf("%d ", lista[j]);
+            }
+            printf("\n");
+        }
+    }
+
+    return 0;
+}
