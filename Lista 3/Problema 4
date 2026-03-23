@@ -1,0 +1,135 @@
+#include <stdio.h>
+
+int main() {
+    int qnt = 0;
+    scanf("%d", &qnt);
+
+    // lista de padr?es XO
+    char lista[1000];
+    int pos = 0; // controla posi??o dentro de lista
+
+    // lista do tamanho de cada uma
+    int tamanhos[qnt];
+
+    // lista de estados 1 e 0
+    int estado[qnt];
+
+    for (int i = 0; i < qnt; i++) {
+        int flag = 0;
+
+        // o padr?o de liga e desliga
+        char S[61];
+
+        // o n?mero de testes
+        int F;
+
+        // a entrada
+        scanf("%s %d", S, &F);
+
+        int tamanho = 0;
+
+        // vendo se ? ?mpar ou par (encontrando o tamanho da string)
+        for (int l = 0; S[l] != '\0'; l++) {
+            tamanho++;
+        }
+
+        char aux[61];
+
+        // copia tudo primeiro
+        for (int j = 0; j < tamanho; j++) {
+            aux[j] = S[j];
+        }
+
+        char L[2] = {'X', 'O'};
+
+        for (int m = 0; m < F; m++) {
+            if (aux[0] == 'X') {
+                aux[0] = 'O';
+            } else {
+                aux[0] = 'X';
+                int econtrouCoisa = 0;
+                for (int y = 1; y < tamanho; y++) {
+                    for (int x = 0; x < 2; x++) {
+                        if (aux[y] == L[x]) {
+                            aux[y] = L[(x + 1) % 2];
+                            if (aux[y] == 'O') {
+                                econtrouCoisa = 1;
+                                break;
+                            }
+                        }
+                    }
+                    if (econtrouCoisa) {
+                            break;
+                    }
+                }
+            }
+        }
+
+        // copia de volta
+        for (int j = 0; j <= tamanho; j++) {
+            S[j] = aux[j];
+        }
+
+        // copia a string FINAL para lista (concatenando)
+        for (int j = 0; j < tamanho; j++) {
+            // print da string individual
+            printf("%c", S[j]);
+            lista[pos++] = S[j];
+        }
+        printf("\n");
+
+        // verificando o estado do led
+        if (S[0] == 'X') {
+            flag = 1; 
+        }
+
+        tamanhos[i] = tamanho;
+    }
+
+    // finaliza a string concatenada
+    lista[pos] = '\0';
+
+    // printando as mensagens com separadores
+    int idx = 0; // controla posi??o na lista
+    int soma = 0; // soma acumulada dos tamanhos
+
+    for (int i = 0; i < qnt; i++) {
+
+        // imprime a parte correspondente da lista
+        for (int j = 0; j < tamanhos[i]; j++) {
+            printf("%c", lista[idx++]);
+        }
+
+        soma += tamanhos[i]; // atualiza soma
+
+        // imprime s?mbolo entre elas
+        if (i < qnt - 1) {
+
+            char ultimo = lista[idx - 1];
+            char primeiro = lista[idx];      // primeiro da pr?xima
+
+            char caracter;
+
+            if (soma % 2 == 0) { // par
+                if (ultimo == primeiro) {
+                    caracter = '@';
+                } else {
+                    caracter = '$';
+                }
+            } else { // ?mpar
+                if (ultimo != primeiro) {
+                    caracter = '%';
+                } else {
+                    caracter = '#';
+                }
+            }
+
+            printf("%c", caracter);
+            soma++;
+        }
+    }
+
+    printf("\n");
+
+    return 0;
+}
