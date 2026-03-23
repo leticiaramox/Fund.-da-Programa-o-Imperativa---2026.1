@@ -22,7 +22,7 @@ int main() {
             int tamanho = i - inicio; // guarda o tamanho dela
 
             inicioPalavras[qtd] = inicio; // coordenada da primeira letra
-            tamanhoPalavras[qtd] = tamanho; // coordenada da segunda letra
+            tamanhoPalavras[qtd] = tamanho; // tamanho de cada uma
             qtd++; // guarda a quantidade de palavras
         }
     }
