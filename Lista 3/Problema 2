@@ -1,0 +1,103 @@
+#include <stdio.h>
+
+int main () {
+    // N = num. de clientes, X = m?ltiplos, Y = quantidade de > 1, H = hora, M = minuto, L = num. de latas 
+    int N = 0, X = 0, Y = 0, H = 0, M = 0, L = 0, hora = 07, minuto = 00, numCliente = 0;
+    scanf("%d", &N);
+    scanf("%d", &X);
+    scanf("%d", &Y);
+    // vari?veis que facilitam a contagem e nos permitem printar as coisas corretamente
+    int tempo = (420 + N * 3), numLatas = 0, vencedor = 0, tempoPassado = 0, latasVencedor = 0, printou = 0;
+    int acabou = 0, faltam = 0;
+    if (Y != 0) {
+        int numeros[Y], horas[Y], minutos[Y];
+        for (int i = 0; i < Y; i++) {
+            scanf("%d:%d %d", &H, &M, &L);
+            // lista de hor?rios e n? de latas
+            minutos[i] = H * 60 + M;
+            numeros[i] = L;
+        }
+        // loop do atendimento
+        for (int i = 420; i < tempo && !acabou; i += 3) {
+            numCliente++;
+            int aconteceuY = 0;
+            // eventos Y (PRIORIDADE)
+            for (int j = 0; j < Y; j++) {
+                if (minutos[j] == 420) {
+                    if (i == minutos[j]) {
+                    numLatas += numeros[j];
+                    aconteceuY = 1;
+                        if (numLatas >= 50) {
+                            vencedor = numCliente;
+                            tempoPassado = i;
+                            latasVencedor = numeros[j];
+                            acabou = 1;
+                            break;
+                        }
+                    }
+                } else {
+                    if (i == minutos[j] - 3) {
+                        numLatas += numeros[j];
+                        aconteceuY = 1;
+                        if (numLatas >= 50) {
+                            vencedor = numCliente;
+                            tempoPassado = i + 3;
+                            latasVencedor = numeros[j];
+                            acabou = 1;
+                            break;
+                        }
+                    };
+                };
+            };
+            // s? aplica X se N?O aconteceu Y
+            if (!aconteceuY && (X != 0 && numCliente % X == 0)) {
+                numLatas++;
+                if (numLatas >= 50) {
+                    vencedor = numCliente;
+                    tempoPassado = i + 3;
+                    latasVencedor = 1;
+                    break;
+                }
+            }
+        }; // fim do for da clientela
+        if (acabou == 0) {
+            faltam = 50 - numLatas;
+        };
+    } else { // caso do Y = 0
+        if (X == 0) {
+            puts("Ainda nao foram vendidas latas suficientes. Faltam 50 latas.");
+            printou = 1;
+        } else {
+            for (int i = 420; i < tempo; i += 3) {
+                numCliente++;
+                // somando os m?ltiplos de X
+                if (numCliente % X == 0) {
+                    numLatas++;
+                    if (numLatas >= 50) {
+                        vencedor = numCliente;
+                        tempoPassado = i + 3;
+                        latasVencedor = 1;
+                        // sai do loop
+                        i = tempo;
+                    };
+                };
+            };
+        };
+    };
+    if (printou == 0 && numLatas >= 50) {
+        int HH = tempoPassado / 60;
+        int MM = tempoPassado % 60;
+        if (latasVencedor == 1) {
+            printf("Quem levou a cesta basica foi o %d* cliente atendido por coragem, as %02d:%02d. Que comprou 1 lata.", vencedor, HH, MM);
+        } else {
+            printf("Quem levou a cesta basica foi o %d* cliente atendido por coragem, as %02d:%02d. Que comprou %d latas.", vencedor, HH, MM, latasVencedor);
+        }
+    } else {
+        if (faltam == 1) {
+            printf("Ainda nao foram vendidas latas suficientes. Falta 1 lata.");
+        } else {
+            printf("Ainda nao foram vendidas latas suficientes. Faltam %d latas.", faltam);
+        }
+        
+    }
+}
