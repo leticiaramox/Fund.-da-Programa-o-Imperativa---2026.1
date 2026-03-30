@@ -1,0 +1,83 @@
+#include <stdio.h>
+
+
+// não tive dificuldades...
+// não foi usado IA em momento nenhum! (não foi necessário)...
+
+
+void coordenada(char movimento[], int matriz[][4]) {
+    
+    int coordenadaInicial = 0, continua = 1, i = 0, j = 0;
+    while (continua) {
+            
+        // vai para cima
+        if (movimento[coordenadaInicial] == 'c') {
+            if (i > 0) {
+                i--;
+                matriz[i][j]++;
+            }
+        // vai para baixo
+        } else if (movimento[coordenadaInicial] == 'b') {
+            if (i < 3) {
+                i++;
+                matriz[i][j]++;
+            }
+        // vai para a direita
+        } else if (movimento[coordenadaInicial] == 'd') {
+            if (j < 3) {
+                j++;
+                matriz[i][j]++;
+            }
+        // vai para a esquerda
+        } else if (movimento[coordenadaInicial] == 'e') {
+            if (j > 0) {
+                j--;
+                matriz[i][j]++;
+            }
+        }
+
+        // andando pela lista de movimentos
+        coordenadaInicial++;
+        if (coordenadaInicial == 20) {
+            continua = 0;
+        }
+    }
+}
+
+
+int main () {
+
+    // matriz das coordenadas
+    int matriz[4][4];
+
+    // deixando tudo zerado!
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            matriz[i][j] = 0;
+        }
+    }
+
+    // recebendo a sequencia de movimentos
+    char movimento[21];
+    scanf("%s", movimento);
+
+    // chama a função matriz novamente
+    for (int i = 0; i < 14; i++) {
+        coordenada(movimento, matriz);
+    }
+
+    // para achar a coordenada de Manuela
+    int x = 0, y = 0;
+
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            if (matriz[i][j] > matriz[x][y]) {
+                x = i + 1;
+                y = j + 1;
+            }
+        }
+    }
+
+    // imprime a mensagem que queremos
+    printf("Coordenada X: %d, Y: %d", x, y);
+}
