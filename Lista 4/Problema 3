@@ -1,0 +1,78 @@
+#include <stdio.h>
+
+
+// não houveram dificuldades significativas. não usei IA.
+void padrao(int n1, int n2, char matriz[][n2 + 1]) {
+    
+    for (int i = 0; i < n1; i++) {
+        for (int j = 0; j < n2; j++) {
+            if (matriz[i][j] == 'P') {
+                // MODIFICANDO OS VIZINHOS
+                // embaixo
+                if (i + 1 < n1 && matriz[i + 1][j] == '-') {
+                    matriz[i + 1][j] = '+';
+                }
+                // em cima
+                if (i - 1 >= 0 && matriz[i - 1][j] == '-') {
+                    matriz[i - 1][j] = '+';
+                }
+                // direita
+                if (j + 1 < n2 && matriz[i][j + 1] == '-') {
+                    matriz[i][j + 1] = '+';
+                }
+                // esquerda
+                if (j - 1 >= 0 && matriz[i][j - 1] == '-') {
+                    matriz[i][j - 1] = '+';
+                }
+
+                // MODIFICANDO AS DIAGONAIS
+                // embaixo e à direita
+                if (i + 1 < n1 && j + 1 < n2 && matriz[i + 1][j + 1] == '-') {
+                    matriz[i + 1][j + 1] = 'x';
+                }
+                // em cima e à direita
+                if (i - 1 >= 0 && j + 1 < n2 && matriz[i - 1][j + 1] == '-') {
+                    matriz[i - 1][j + 1] = 'x';
+                }
+                // embaixo e à esquerda
+                if (i + 1 < n1 && j - 1 >= 0 && matriz[i + 1][j - 1] == '-') {
+                    matriz[i + 1][j - 1] = 'x';
+                }
+                // em cima e à esquerda
+                if (i - 1 >= 0 && j - 1 >= 0 && matriz[i - 1][j - 1] == '-') {
+                    matriz[i - 1][j - 1] = 'x';
+                }
+                   
+            }
+        }
+    }
+
+}
+
+
+
+int main () {
+    // recebendo as dimensões
+    int n1, n2;
+    scanf("%d %d", &n1, &n2);
+
+    // recebendo a matriz
+    char matriz[n1][n2 + 1];
+
+    for (int i = 0; i < n1; i++) {
+        scanf("%s", matriz[i]);
+    }
+
+    for (int t = 0; t < n1 * n2; t++) {
+        // em termos de fluxo, n1 * n2 é o máximo de passos possíveis
+        padrao(n1, n2, matriz);
+    }
+
+    // imprimindo a matriz
+    for (int i = 0; i < n1; i++) {
+        printf("%s\n", matriz[i]);
+    }
+
+    return 0;
+
+}
