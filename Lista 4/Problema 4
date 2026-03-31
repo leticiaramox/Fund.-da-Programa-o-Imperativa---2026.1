@@ -1,0 +1,73 @@
+// foi usado IA sobre como fazer o passo recursivo (passo seguinte - linha 35)
+// não foi sentida grande dificuldade!
+
+#include <stdio.h>
+#include <stdbool.h>
+
+int n1, n2;
+char mapa[100][100];
+bool visitado[100][100];
+
+// direções: baixo, cima, direita, esquerda
+int dr[] = {1, -1, 0, 0};
+int dc[] = {0, 0, 1, -1};
+
+// conta passos quando ela está no caminho certo
+int passos = 0;
+
+bool buscar_saida(int r, int c) {
+    // fora dos limites / parede / já visitado
+    if (r < 0 || r >= n1 || c < 0 || c >= n2 || mapa[r][c] == '#' || visitado[r][c]) {
+        return false;
+    }
+
+    // encontrou a saída!!
+    if (mapa[r][c] == 'd') {
+        return true;
+    }
+
+    // marcar como visitado (escolha)
+    visitado[r][c] = true;
+
+    // explorar vizinhos (recursão)
+    for (int i = 0; i < 4; i++) {
+        if (buscar_saida(r + dr[i], c + dc[i])) { // aqui é estudado o próximo passo a ser tomado!
+            passos++;
+            return true; // se algum caminho levar à saída, sucesso!!
+        }
+    }
+    
+    // limpando a trilha
+    return false;
+}
+
+int main() {
+    // recebendo as dimensões
+    scanf("%dx%d", &n1, &n2);
+
+    // onde ela começa!
+    int start_r, start_c;
+
+    // as linhas das matrizes
+    for (int i = 0; i < n1; i++) {
+        scanf("%s", mapa[i]);
+        for (int j = 0; j < n2; j++) {
+            if (mapa[i][j] == 'o') {
+                // marca o início
+                start_r = i;
+                start_c = j;
+            }
+            // inicia tudo como false!
+            visitado[i][j] = false;
+        }
+    }
+
+    // se saiu ou não
+    if (buscar_saida(start_r, start_c)) {
+        printf("Apos correr %d metros e quase desistir por causa da distância, Rebeka conseguiu escapar!\n", passos);
+    } else {
+        printf("Poxa... Parece que nao foi dessa vez que Rebeka conseguiu fugir\n");
+    }
+
+    return 0;
+}
