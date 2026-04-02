@@ -1,8 +1,7 @@
 #include <stdio.h>
 
-
-// não tive dificuldades...
-// não foi usado IA em momento nenhum! (não foi necessário)...
+// NÃO FOI USADO IA EM MOMENTO NENHUM!!!
+// não houveram dificuldades significativas
 
 
 void coordenada(char movimento[], int matriz[][4]) {
@@ -59,12 +58,13 @@ int main () {
 
     // recebendo a sequencia de movimentos
     char movimento[21];
-    scanf("%s", movimento);
-
-    // chama a função matriz novamente
-    for (int i = 0; i < 14; i++) {
-        coordenada(movimento, matriz);
+    
+    for (int k = 0; k < 20; k++) {
+        scanf(" %c", &movimento[k]);
     }
+
+    // chama a fun��o matriz novamente
+    coordenada(movimento, matriz);
 
     // para achar a coordenada de Manuela
     int x = 0, y = 0;
@@ -72,12 +72,12 @@ int main () {
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
             if (matriz[i][j] > matriz[x][y]) {
-                x = i + 1;
-                y = j + 1;
+                x = i;
+                y = j;
             }
         }
     }
 
     // imprime a mensagem que queremos
-    printf("Coordenada X: %d, Y: %d", x, y);
+    printf("Coordenada X:%d, Y:%d", y, x);
 }
