@@ -1,29 +1,14 @@
 #include <stdio.h>
 
+// não houveram dificuldades significativas!
+// usei IA pq tava dando erro em 3 casos: quando havia um 'x' e não substituia por '+'...
 
-// não houveram dificuldades significativas. não usei IA.
+
 void padrao(int n1, int n2, char matriz[][n2 + 1]) {
     
     for (int i = 0; i < n1; i++) {
         for (int j = 0; j < n2; j++) {
             if (matriz[i][j] == 'P') {
-                // MODIFICANDO OS VIZINHOS
-                // embaixo
-                if (i + 1 < n1 && matriz[i + 1][j] == '-') {
-                    matriz[i + 1][j] = '+';
-                }
-                // em cima
-                if (i - 1 >= 0 && matriz[i - 1][j] == '-') {
-                    matriz[i - 1][j] = '+';
-                }
-                // direita
-                if (j + 1 < n2 && matriz[i][j + 1] == '-') {
-                    matriz[i][j + 1] = '+';
-                }
-                // esquerda
-                if (j - 1 >= 0 && matriz[i][j - 1] == '-') {
-                    matriz[i][j - 1] = '+';
-                }
 
                 // MODIFICANDO AS DIAGONAIS
                 // embaixo e à direita
@@ -42,7 +27,24 @@ void padrao(int n1, int n2, char matriz[][n2 + 1]) {
                 if (i - 1 >= 0 && j - 1 >= 0 && matriz[i - 1][j - 1] == '-') {
                     matriz[i - 1][j - 1] = 'x';
                 }
-                   
+
+                // MODIFICANDO OS VIZINHOS
+                // embaixo
+                if (i + 1 < n1 && (matriz[i + 1][j] == '-' || matriz[i + 1][j] == 'x')) {
+                    matriz[i + 1][j] = '+';
+                }
+                // em cima
+                if (i - 1 >= 0 && (matriz[i - 1][j] == '-' || matriz[i - 1][j] == 'x')) {
+                    matriz[i - 1][j] = '+';
+                }
+                // direita
+                if (j + 1 < n2 && (matriz[i][j + 1] == '-' || matriz[i][j + 1] == 'x')) {
+                    matriz[i][j + 1] = '+';
+                }
+                // esquerda
+                if (j - 1 >= 0 && (matriz[i][j - 1] == '-' || matriz[i][j - 1] == 'x')) {
+                    matriz[i][j - 1] = '+';
+                }                   
             }
         }
     }
@@ -63,10 +65,7 @@ int main () {
         scanf("%s", matriz[i]);
     }
 
-    for (int t = 0; t < n1 * n2; t++) {
-        // em termos de fluxo, n1 * n2 é o máximo de passos possíveis
-        padrao(n1, n2, matriz);
-    }
+    padrao(n1, n2, matriz);
 
     // imprimindo a matriz
     for (int i = 0; i < n1; i++) {
