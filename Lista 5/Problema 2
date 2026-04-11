@@ -1,0 +1,72 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+int main () {
+    int *numeros = NULL; 
+    int entrada = 0, i = 0;
+
+    while (scanf("%d", &entrada) == 1) {
+        int *temp = realloc(numeros, (i + 1) * sizeof(int));
+        
+        if (temp != NULL) {
+            numeros = temp;
+            numeros[i] = entrada;
+            i++;
+        } else {
+            free(numeros); // Limpa o que já foi alocado antes de sair
+            exit(1);
+        }
+    }
+
+    int num_impares = 0, num_pares = 0;
+    for (int j = 0; j < i; j++) {
+        int resto = numeros[j] % 2;
+
+        if (resto == 0) {
+            num_pares++;
+        } else {
+            num_impares++;
+        }
+    }
+
+    int *impares = malloc((num_impares + 1) * sizeof(int));
+    int *pares = malloc((num_pares + 1) * sizeof(int));
+
+    int idxImpar = 0, idxPar = 0, l = 0;
+
+    if (impares == NULL && num_impares > 0 || pares == NULL && num_pares > 0) {
+        free(numeros); 
+        free(impares); 
+        free(pares);
+        exit(1);
+    }
+    
+    for (int l = 0; l < i; l++) {
+
+        if (numeros[l] % 2 == 0) {
+            pares[idxPar] = numeros[l];
+            idxPar++;
+        } else {
+            impares[idxImpar] = numeros[l];
+            idxImpar++;
+        }
+
+    }
+
+    puts("Mais um bom dia de trabalho!");
+
+    for (int j = 0; j < num_impares; j++) {
+        printf("%d\n", impares[j]);
+    }
+
+    for (int j = 0; j < num_pares; j++) {
+        printf("%d\n", pares[j]);
+    }
+
+    puts("Vou visitar esses lugares de novo... algum dia.");
+
+    free(numeros);
+
+    return 0;
+}
