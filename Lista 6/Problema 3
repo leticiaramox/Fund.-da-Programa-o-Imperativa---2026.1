@@ -1,0 +1,233 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void modificar(int** matriz_dobro, int** matriz_5, int** matriz_saturacao, int n1, int n2);
+
+
+int main () {
+    int n1, n2;
+    scanf("%d %d", &n1, &n2);
+
+    int** matriz_original = malloc(n1 * sizeof(int*));
+
+    if (matriz_original == NULL) {
+        free(matriz_original);
+        exit(1);
+    }
+
+    for (int i = 0; i < n1; i++) {
+        matriz_original[i] = (int* ) malloc(n2 * sizeof(int));
+        
+        if (matriz_original[i] == NULL) {
+            for (int j = 0; j < i; j++) {
+                free(matriz_original[i]);
+            }
+            exit(1);
+        }
+
+        for (int j = 0; j < n2; j++) {
+            scanf(" %d", &matriz_original[i][j]);
+        }
+    }
+
+    // cria cópia para soma 5
+    int** matriz_5 = malloc(n1 * sizeof(int*));
+
+    if (matriz_5 == NULL) {
+        free(matriz_5);
+        exit(1);
+    }
+
+    for (int i = 0; i < n1; i++) {
+        matriz_5[i] = (int* ) malloc(n2 * sizeof(int));
+        
+        if (matriz_5[i] == NULL) {
+            for (int j = 0; j < i; j++) {
+                free(matriz_5[i]);
+            }
+            exit(1);
+        }
+
+        for (int j = 0; j < n2; j++) {
+            matriz_5[i][j] = matriz_original[i][j];
+        }
+    }
+
+    int** matriz_dobro = malloc(n1 * sizeof(int*));
+
+    if (matriz_dobro == NULL) {
+        free(matriz_dobro);
+        exit(1);
+    }
+
+    for (int i = 0; i < n1; i++) {
+        matriz_dobro[i] = (int* ) malloc(n2 * sizeof(int));
+        
+        if (matriz_dobro[i] == NULL) {
+            for (int j = 0; j < i; j++) {
+                free(matriz_dobro[i]);
+            }
+            exit(1);
+        }
+
+        for (int j = 0; j < n2; j++) {
+            matriz_dobro[i][j] = matriz_original[i][j];
+        }
+    }
+
+    int** matriz_saturacao = malloc(n1 * sizeof(int*));
+
+    if (matriz_saturacao == NULL) {
+        free(matriz_saturacao);
+        exit(1);
+    }
+
+    for (int i = 0; i < n1; i++) {
+        matriz_saturacao[i] = (int* ) malloc(n2 * sizeof(int));
+        
+        if (matriz_saturacao[i] == NULL) {
+            for (int j = 0; j < i; j++) {
+                free(matriz_saturacao[i]);
+            }
+            exit(1);
+        }
+
+        for (int j = 0; j < n2; j++) {
+            matriz_saturacao[i][j] = matriz_original[i][j];
+        }
+    }
+
+
+    void (*f[1])(int**, int**, int**, int, int) = {modificar};
+
+    int N = -1;
+
+    while(1) {
+        scanf("%d", &N);
+
+        if (N == 0) {
+            break;
+        }
+
+        if (N == 4) {
+            int seq = 0;
+            scanf(" %d", &seq);
+
+            for (int i = 0; i < seq; i++) {
+                int operacao = 0;
+                scanf(" %d", &operacao);
+
+                f[0](matriz_dobro, matriz_5, matriz_saturacao, n1, n2);
+
+                if (operacao == 1) {
+                    for (int k = 0; k < n1; k++) {
+                        for (int j = 0; j < n2; j++) {
+                            matriz_saturacao[k][j] = matriz_5[k][j];
+                            matriz_dobro[k][j] = matriz_5[k][j];
+                        }
+                    }
+                } else if (operacao == 2) {
+                    for (int k = 0; k < n1; k++) {
+                        for (int j = 0; j < n2; j++) {
+                            matriz_5[k][j] = matriz_saturacao[k][j];
+                            matriz_dobro[k][j] = matriz_saturacao[k][j];
+                        }
+                    }
+                } else {
+                    for (int k = 0; k < n1; k++) {
+                        for (int j = 0; j < n2; j++) {
+                            matriz_saturacao[k][j] = matriz_dobro[k][j];
+                            matriz_5[k][j] = matriz_dobro[k][j];
+                        }
+                    }
+                }
+            }
+        } else if (N == 1) {
+            f[0](matriz_dobro, matriz_5, matriz_saturacao, n1, n2);
+            for (int i = 0; i < n1; i++) {
+                for (int j = 0; j < n2; j++) {
+                    matriz_saturacao[i][j] = matriz_5[i][j];
+                    matriz_dobro[i][j] = matriz_5[i][j];
+                }
+            }
+        } else if (N == 2) {
+            f[0](matriz_dobro, matriz_5, matriz_saturacao, n1, n2);
+            for (int i = 0; i < n1; i++) {
+                for (int j = 0; j < n2; j++) {
+                    matriz_5[i][j] = matriz_saturacao[i][j];
+                    matriz_dobro[i][j] = matriz_saturacao[i][j];
+                } 
+            }
+        } else {
+            f[0](matriz_dobro, matriz_5, matriz_saturacao, n1, n2);
+            for (int i = 0; i < n1; i++) {
+                for (int j = 0; j < n2; j++) {
+                    matriz_saturacao[i][j] = matriz_dobro[i][j];
+                    matriz_5[i][j] = matriz_dobro[i][j];
+                }
+            }
+        }
+    }
+
+    puts("Matriz processada:");
+
+    for (int i = 0; i < n1; i++) {
+        for (int j = 0; j < n2; j++) {
+            printf("%d ", matriz_5[i][j]);
+        }
+        puts(" ");
+    }
+    puts(" ");
+
+    int max = 0, x = 0, y = 0;
+    for (int i = 0; i < n1; i++) {
+        for (int j = 0; j < n2; j++) {
+            if (matriz_5[i][j] > max) {
+                max = matriz_5[i][j];
+                x = i;
+                y = j;
+            }
+        }
+    }
+
+    printf("Sensor critico: %d\n", max);
+    printf("Posicao: (%d, %d)\n", x, y);
+
+}
+
+
+void modificar (int** matriz_dobro, int** matriz_5, int** matriz_saturacao, int n1, int n2) {
+
+    // -------------------
+    // CALIBRAÇÃO (+ 5)
+    // -------------------
+
+    for (int i = 0; i < n1; i++) {
+        for (int j = 0; j < n2; j++) {
+            matriz_5[i][j] += 5;
+        }
+    }
+
+    // -------------------
+    // SATURAÇÃO
+    // -------------------
+
+    for (int i = 0; i < n1; i++) {
+        for (int j = 0; j < n2; j++) {
+            if (matriz_saturacao[i][j] > 80) {
+                matriz_saturacao[i][j] = 80;
+            }
+        }
+    }
+
+    // -------------------
+    // AMPLIFICADOR (x 2)
+    // -------------------
+
+    for (int i = 0; i < n1; i++) {
+        for (int j = 0; j < n2; j++) {
+            matriz_dobro[i][j] *= 2;
+        }
+    }
+
+}
