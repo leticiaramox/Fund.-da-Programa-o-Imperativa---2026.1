@@ -1,0 +1,210 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void dano1(int** matriz, int x, int y, int n1, int n2);
+void dano2(int** matriz, int x, int y, int n1, int n2);
+
+void liberar(int** m, int linhas) {
+    if (m == NULL) {
+        free(m);
+        return;
+    } 
+    for (int i = 0; i < linhas; i++) free(m[i]);
+    free(m);
+}
+
+
+int main() {
+
+    int n1, n2;
+    scanf("%d %d", &n1, &n2);
+
+    int** matriz;
+    matriz = (int**) malloc(n1 * sizeof(int*));
+
+    if (matriz == NULL) {
+        free(matriz);
+        exit(1);
+    }
+
+    for (int i = 0; i < n1; i++) {
+        matriz[i] = (int*) malloc(n2 * sizeof(int));
+
+        if (matriz[i] == NULL) {
+            if (matriz[i] == NULL) {
+                liberar(matriz, i);
+                exit(1);                
+            }
+        }
+
+        for (int j = 0; j < n2; j++) {
+            scanf("%d", &matriz[i][j]); 
+        }
+    }
+
+    // cria uma cópia
+    int** copia = (int **) malloc(n1 * sizeof(int*));
+
+    if (copia == NULL) {
+        free(copia);
+        exit(1);
+    }
+
+    for (int i = 0; i < n1; i++) {
+        copia[i] = (int*) malloc(n2 * sizeof(int));
+
+        if (copia[i] == NULL) {
+            for (int j = 0; j < i; j++) {
+                free(copia[j]);
+                exit(1);
+            }
+        }
+
+        for (int j = 0;j < n2; j++) {
+            copia[i][j] = matriz[i][j];
+        }
+    }
+
+    int x, y;
+    scanf("%d %d", &x, &y);
+
+    char ataque[50];
+    scanf(" %49[^\n]", ataque);
+
+    int soma = 0;
+    for (int i = 0; ataque[i] != '\0'; i++) {
+        soma += ataque[i];
+    }
+
+    printf("Estado inicial do mapa:\n");
+
+    for (int i = 0; i < n1; i++) {
+        for (int j = 0; j < n2; j++) {
+            printf("%d ", matriz[i][j]);
+            if (j == n2 - 1) {
+                printf("\n");
+            }
+        }
+    }
+
+   void (*funcao_dano[2])(int**, int, int, int, int) = {dano1, dano2};
+
+   if (soma == 1136) { // EXPLOSAO_ARCANA
+        funcao_dano[0](copia, x, y, n1, n2);
+        printf("\nEstado do mapa após usar a Explosão Arcana:\n");
+
+        for (int i = 0; i < n1; i++) {
+            for (int j = 0; j < n2; j++) {
+                printf("%d ", copia[i][j]);
+                if (j == n2 - 1) {
+                    printf("\n");
+                }
+            }
+        }
+    } else {
+        printf("\nEstado do mapa, por turno, após usar a Nuvem Venenosa:\n");
+        funcao_dano[1](copia, x, y, n1, n2);
+    }
+
+    liberar(copia, n1);
+    liberar(matriz, n1);
+    return 0;
+}
+
+void dano1 (int** copia, int x, int y, int n1, int n2) {
+
+    for (int i = 0; i < n1; i++) {
+        for (int j = 0; j < n2; j++) {
+            int dano_tomado = 0;
+            if (i < x - 2 || i > x + 2 || j < y - 2 || j > y + 2 || (abs(i - x) == 2 && abs(j - y) == 2)) continue;
+            if (((abs(i - x) <= 1 && abs(j - y) <= 1) && (abs(i - x) != abs(j - y))) || x == i && y == j) {
+                dano_tomado = 50;
+            } else {
+                dano_tomado = 25;
+            }
+            
+            copia[i][j] -= dano_tomado;
+        } 
+    }
+
+    for (int i = 0; i < n1; i++) {
+        for (int j = 0; j < n2; j++) {
+            if (copia[i][j] < 0) {
+                copia[i][j] = 0;
+            }
+        }
+
+    }
+
+}
+
+
+void conta_vizinhos (int** copia, int x, int y, int n1, int n2, int vizinhos[][n2]) {
+    for (int l = 0; l < n1; l++) {
+        for (int m = 0; m < n2; m++) {
+            for (int i = -1; i <= 1; i++) {
+                for (int j = -1; j <= 1; j++) {
+                    if (0 <= l + i && l + i < n1 && 0 <= m + j && m + j < n2 && copia[l + i][m + j] > 0) {
+                        vizinhos[l][m]++;
+                    }
+                }
+            }
+        }
+    }
+}
+
+void dano2 (int** copia, int x, int y, int n1, int n2) {
+    for (int k = 0; k < 3; k++) {
+
+        int vizinhos_vivos = -1;
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                if (0 <= x + i && x + i < n1 && 0 <= y + j && y + j < n2 && copia[x + i][y + j] > 0) {
+                    vizinhos_vivos++;
+                }
+            }
+        }
+
+        int vizinhos[n1][n2];
+        for (int l = 0; l < n1; l++) {
+            for (int m = 0; m < n2; m++) {
+                vizinhos[l][m] = -1;
+            }
+        }
+
+        conta_vizinhos (copia, x, y, n1, n2, vizinhos);
+
+        for (int i = 0; i < n1; i++) {
+            for (int j = 0; j < n2; j++) {
+                if (i < x - 2 || i > x + 2 || j < y - 2 || j > y + 2 || (abs(i - x) == 2 && abs(j - y) == 2)) continue; 
+                int dano_tomado = 5 + (8 * vizinhos[i][j]);
+                copia[i][j] -= dano_tomado;
+            }
+        }
+
+        for (int i = 0; i < n1; i++) {
+            for (int j = 0; j < n2; j++) {
+                if (copia[i][j] < 0) {
+                    copia[i][j] = 0;
+                }
+            }
+        }
+
+        if (vizinhos_vivos != -1) {
+            for (int i = 0; i < n1; i++) {
+                for (int j = 0; j < n2; j++) {
+                    printf("%d ", copia[i][j]);
+                    if (j == n2 - 1 && n2 > 1) {
+                        printf("\n");
+                    }
+                }
+            }
+            puts(" ");
+            if (n2 == 1) {
+                puts(" ");
+            }
+        } else {
+            break;
+        }
+    }
+}
