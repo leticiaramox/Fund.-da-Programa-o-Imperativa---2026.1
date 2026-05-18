@@ -38,7 +38,7 @@ int main() {
         printf("Pacote [%d] - Dado Bruto: 0x%08X\n", j + 1, lista_num[j].valor_total);
         printf("ID do Sensor    : %u\n", lista_num[j].campos.id);
         printf("Status     : %u\n", lista_num[j].campos.status);
-        printf("Bateria Baixa   : %s\n", lista_num[j].campos.bateria_baixa ? "SIM (CRITICO)" : "Nao");
+        printf("Bateria Baixa   : %s\n", lista_num[j].campos.bateria_baixa ? "SIM (ALERTA)" : "Nao");
         printf("Temperatura     : %d graus\n", lista_num[j].campos.temperatura);
         printf("-------------------------------------------------------\n");
     }
