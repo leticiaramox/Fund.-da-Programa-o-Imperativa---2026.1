@@ -1,36 +1,44 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <inttypes.h>
 
 typedef union {
-    unsigned int valor_total;
+    uint32_t valor_total;
 
     struct {
-        unsigned int id            : 10; 
-        unsigned int status        : 3;  
-        unsigned int bateria_baixa : 1;  
-        int temperatura            : 12; 
-        unsigned int paridade      : 6;  
+        uint32_t id            : 10; 
+        uint32_t status        : 3;  
+        uint32_t bateria_baixa : 1;  
+        int temperatura        : 12; 
+        uint32_t paridade      : 6;  
     } campos;
     
 } Pacote;
 
 int main() {
-    Pacote* lista_num = NULL;
-    int i = 0;
+    Pacote* lista_num = malloc(sizeof(Pacote));
+    if (lista_num == NULL) {
+        free(lista_num);
+        exit(1);
+    }
 
+    int i = 0, lenght = 1;
     while (1) {
-        unsigned int temp_val;
-        // %i detecta 0x automaticamente
-        if (scanf("%i", &temp_val) != 1 || temp_val == 0 || temp_val == "0x0") break;
+        Pacote temp_val;
 
-        Pacote* temp_ptr = realloc(lista_num, (i + 1) * sizeof(Pacote));
-        if (temp_ptr == NULL) {
-            free(lista_num);
-            free(temp_ptr);
-            return 1;
+        if (scanf("%i", &temp_val.valor_total) != 1 || temp_val.valor_total == 0) break;
+
+        if (i + 1 == lenght) {
+            Pacote* temp_ptr = realloc(lista_num, (2 * i + 2) * sizeof(Pacote));
+            if (temp_ptr == NULL) {
+                free(lista_num);
+                return 1;
+            }
+            lista_num = temp_ptr;
+            lenght = 2 * i + 2;
         }
-        lista_num = temp_ptr;
-        lista_num[i].valor_total = temp_val;
+
+        lista_num[i] = temp_val;
         i++;
     }
 
